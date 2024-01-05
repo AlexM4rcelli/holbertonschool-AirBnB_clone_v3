@@ -8,6 +8,7 @@ from . import app_views
 from models import storage
 from flask import jsonify, request
 
+
 @app_views.route('/status', strict_slashes=False)
 def status():
     """_summary_
@@ -17,8 +18,9 @@ def status():
     """
     if request.method == 'GET':
         return jsonify({
-        "status": "OK"
-    })
+            "status": "OK"
+                        })
+
 
 @app_views.route('/stats', strict_slashes=False)
 def stats():
