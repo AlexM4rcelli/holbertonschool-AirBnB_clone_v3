@@ -3,7 +3,7 @@
 
     Returns:
         _type_: _description_
-    """
+"""
 from . import app_views
 from models import storage
 from models.state import State
