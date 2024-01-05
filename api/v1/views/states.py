@@ -1,5 +1,10 @@
 #!/usr/bin/python3
-"""_summary_
+"""
+This module contains the implementation of the state views for your application.
+
+It includes two routes:
+- /states: Handles GET (list all states) and POST (create a new state) requests.
+- /states/<state_id>: Handles GET (retrieve a state), DELETE (delete a state), and PUT (update a state) requests.
 """
 from . import app_views
 from models import storage
