@@ -1,5 +1,9 @@
 #!/usr/bin/python3
+    """_summary_
 
+    Returns:
+        _type_: _description_
+    """
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
