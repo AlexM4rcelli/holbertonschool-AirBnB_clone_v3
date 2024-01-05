@@ -1,5 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
+"""_summary_
 
+    Returns:
+        _type_: _description_
+    """
 from . import app_views
 from models import storage
 from models.state import State
@@ -10,9 +14,14 @@ from flask import request, jsonify, abort
                  methods=['GET', 'POST'],
                  strict_slashes=False)
 def state_view():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     if request.method == 'GET':
         states = storage.all(State).values()
-        state_list = [state.to_dict() for   state in states]
+        state_list = [state.to_dict() for state in states]
 
         return jsonify(state_list)
 
@@ -30,10 +39,18 @@ def state_view():
         return jsonify({"error": "Not a JSON"}), 400
 
 
-@app_views.route('states/<state_id>', 
+@app_views.route('states/<state_id>',
                  methods=['GET', 'DELETE', 'PUT'],
                  strict_slashes=False)
 def state_by_id(state_id):
+    """_summary_
+
+    Args:
+        state_id (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     state = storage.get(State, str(state_id))
 
     if state is None:
@@ -41,12 +58,12 @@ def state_by_id(state_id):
 
     if request.method == 'GET':
         return jsonify(state.to_dict())
-    
+
     if request.method == 'DELETE':
         state.delete()
         storage.save()
         return jsonify({}), 200
-    
+
     if request.method == 'PUT':
         data = request.get_json()
 
@@ -57,5 +74,5 @@ def state_by_id(state_id):
                     setattr(state, key, val)
             storage.save()
             return jsonify(state.to_dict()), 200
-            
+
         return jsonify({"error": "Not a JSON"}), 400

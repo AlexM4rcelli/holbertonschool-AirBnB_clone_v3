@@ -1,18 +1,28 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
+"""_summary_
 
+    Returns:
+        _type_: _description_
+    """
 from . import app_views
 from models import storage
 from models.amenity import Amenity
 from flask import request, jsonify, abort
 
+
 @app_views.route('/amenities',
                  methods=['GET', 'POST'],
                  strict_slashes=False)
 def amenities_view():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     if request.method == 'GET':
         amenities = storage.all(Amenity).values()
         return jsonify([a.to_dict() for a in amenities])
-    
+
     if request.method == 'POST':
         data = request.get_json()
 
@@ -31,19 +41,27 @@ def amenities_view():
                  methods=['GET', 'DELETE', 'PUT'],
                  strict_slashes=False)
 def amenity_by_id(amenity_id):
+    """_summary_
+
+    Args:
+        amenity_id (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     amenity = storage.get(Amenity, str(amenity_id))
-    
+
     if amenity is None:
         return abort(404)
-    
+
     if request.method == 'GET':
         return jsonify(amenity.to_dict())
-    
+
     if request.method == 'DELETE':
         amenity.delete()
         storage.save()
         return jsonify({}), 200
-    
+
     if request.method == 'PUT':
         data = request.get_json()
 
@@ -54,5 +72,5 @@ def amenity_by_id(amenity_id):
                     setattr(amenity, key, val)
             storage.save()
             return jsonify(amenity.to_dict()), 200
-            
+
         return jsonify({"error": "Not a JSON"}), 400

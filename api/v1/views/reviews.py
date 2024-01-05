@@ -1,22 +1,35 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
+"""_summary_
 
+    Returns:
+        _type_: _description_
+    """
 from . import app_views
 from models import storage
 from models.place import Place
 from models.review import Review
 from flask import request, jsonify, abort
 
+
 @app_views.route('/places/<place_id>/reviews',
                  methods=['GET', 'POST'],
                  strict_slashes=False)
 def reviews_view(place_id):
+    """_summary_
+
+    Args:
+        place_id (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     place = storage.get(Place, str(place_id))
     if place is None:
         return abort(404)
 
     if request.method == 'GET':
         return jsonify([review.to_dict() for review in place.places])
-    
+
     if request.method == 'POST':
         data = request.get_json()
 
@@ -42,19 +55,27 @@ def reviews_view(place_id):
                  methods=['GET', 'DELETE', 'PUT'],
                  strict_slashes=False)
 def review_by_id(review_id):
+    """_summary_
+
+    Args:
+        review_id (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     review = storage.get(Review, str(review_id))
-    
+
     if review is None:
         return abort(404)
-    
+
     if request.method == 'GET':
         return jsonify(review.to_dict())
-    
+
     if request.method == 'DELETE':
         review.delete()
         storage.save()
         return jsonify({}), 200
-    
+
     if request.method == 'PUT':
         data = request.get_json()
 
@@ -68,5 +89,5 @@ def review_by_id(review_id):
                     setattr(review, key, val)
             storage.save()
             return jsonify(review.to_dict()), 200
-            
+
         return jsonify({"error": "Not a JSON"}), 400
