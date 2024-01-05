@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This module contains the implementation of the 
+This module contains the implementation of the
 state views for your application.
 
 It includes two routes:
